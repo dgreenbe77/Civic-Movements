@@ -1,0 +1,48 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Topic:</strong>
+  <%= @user.title %>
+</p>
+
+<p>
+  <strong>Address / Location:</strong>
+  <%= @user.address %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @user.description %>
+</p>
+
+<p>
+<%= "Posted " + time_ago_in_words(@user.created_at) + " ago"%>
+</p>
+
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', users_path %>
+
+<div style='width: 800px;'>
+  <div id="map" style='width: 800px; height: 400px;'></div>
+</div>
+
+<script type="text/javascript">
+handler = Gmaps.build('Google');
+handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+  markers = handler.addMarkers(<%=raw @hash.to_json %>);
+  handler.bounds.extendWith(markers);
+  handler.fitMapToBounds();
+});
+('#map_canvas').gmap('clear', 'markers');
+  if (data.Response.ShopListInfo instanceof Array) {
+      $.each( data.Response.ShopListInfo, function(i, marker) {
+            latitude = marker.Latitude;
+               longitude = marker.Longitude; 
+               displayMarkers(latitude, longitude, marker);
+      });
+  }else{
+      latitude = data.Response.ShopListInfo.Latitude;
+      longitude = data.Response.ShopListInfo.Longitude; 
+      displayMarkers(latitude, longitude, data.Response.ShopListInfo);
+  } 
+</script>
